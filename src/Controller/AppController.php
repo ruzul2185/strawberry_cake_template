@@ -56,5 +56,12 @@ class AppController extends Controller
     {
         $this->viewBuilder()->setTheme('AdminLTE');
         $this->viewBuilder()->setClassName('AdminLTE.AdminLTE');
+
+
+        $menus = $this->fetchTable('Menus')
+        ->find()
+        ->where(['is_active' => 1])
+        ->all();
+        $this->set(compact('menus'));
     }
 }
