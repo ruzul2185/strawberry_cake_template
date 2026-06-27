@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 27, 2026 at 12:06 AM
+-- Generation Time: Jun 27, 2026 at 08:10 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -47,6 +47,20 @@ INSERT INTO `menus` (`id`, `title`, `table_name`, `is_active`, `created`, `modif
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `phinxlog`
+--
+
+CREATE TABLE `phinxlog` (
+  `version` bigint(20) NOT NULL,
+  `migration_name` varchar(100) DEFAULT NULL,
+  `start_time` timestamp NULL DEFAULT NULL,
+  `end_time` timestamp NULL DEFAULT NULL,
+  `breakpoint` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `roles`
 --
 
@@ -86,7 +100,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role_id`, `created`, `modified`) VALUES
-(1, 'Admin', 'admin@admin.com', 'admin123', 1, '2026-06-26 19:52:23', '2026-06-26 19:52:23');
+(1, 'Admin', 'admin@admin.com', '$2y$10$E8fS07v8sJ7CpYjW/OF65.tVb2yAOrMewVp3jOB8bN0kiDg/kRd.e', 1, '2026-06-26 19:52:23', '2026-06-26 19:52:23');
 
 --
 -- Indexes for dumped tables
@@ -98,6 +112,12 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `role_id`, `created`, `m
 ALTER TABLE `menus`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `table_name` (`table_name`);
+
+--
+-- Indexes for table `phinxlog`
+--
+ALTER TABLE `phinxlog`
+  ADD PRIMARY KEY (`version`);
 
 --
 -- Indexes for table `roles`

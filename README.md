@@ -26,6 +26,13 @@ bin/cake server
 
 Then visit `http://localhost:8765` to see the welcome page.
 
+## Default Authentication Credentials
+
+You can log in to the application using the following default admin credentials:
+- **Email**: `admin@admin.com`
+- **Password**: `admin123`
+
+
 ## Configuration
 
 Read and edit the environment specific `config/app_local.php` and set up the
