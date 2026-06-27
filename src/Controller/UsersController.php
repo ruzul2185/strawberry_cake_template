@@ -12,6 +12,51 @@ namespace App\Controller;
 class UsersController extends AppController
 {
     /**
+     * @inheritDoc
+     */
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        $this->Authentication->allowUnauthenticated(['login', 'logout']);
+    }
+
+    /**
+     * Login method
+     */
+    public function login()
+    {
+        $this->request->allowMethod(['get', 'post']);
+        $result = $this->Authentication->getResult();
+        if ($result && $result->isValid()) {
+            $redirect = $this->request->getQuery('redirect', [
+                'controller' => 'Pages',
+                'action' => 'display',
+                'home',
+            ]);
+            return $this->redirect($redirect);
+        }
+        if ($this->request->is('post') && !$result->isValid()) {
+            $this->Flash->error(__('Invalid username or password'));
+        }
+
+        // Render the template templates/Pages/login.php
+        $this->viewBuilder()->setTemplatePath('Pages');
+        $this->viewBuilder()->setTemplate('login');
+    }
+
+    /**
+     * Logout method
+     */
+    public function logout()
+    {
+        $result = $this->Authentication->getResult();
+        if ($result && $result->isValid()) {
+            $this->Authentication->logout();
+        }
+        return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+    }
+
+    /**
      * Index method
      *
      * @return \Cake\Http\Response|null|void Renders view
@@ -78,7 +123,11 @@ class UsersController extends AppController
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
+            $data = $this->request->getData();
+            if (empty($data['password'])) {
+                unset($data['password']);
+            }
+            $user = $this->Users->patchEntity($user, $data);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The {0} has been saved.', 'User'));
 

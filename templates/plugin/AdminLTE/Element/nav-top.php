@@ -1,4 +1,11 @@
-<?php use Cake\Core\Configure; ?>
+<?php
+use Cake\Core\Configure;
+
+$identity = $this->request->getAttribute('identity');
+$username = $identity ? $identity->get('name') : 'Guest';
+$userEmail = $identity ? $identity->get('email') : '';
+$userCreated = $identity ? $identity->get('created') : null;
+?>
 <nav class="navbar navbar-static-top">
 
   <?php if (isset($layout) && $layout == 'top'): ?>
@@ -253,7 +260,7 @@
       <li class="dropdown user user-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
           <?php echo $this->Html->image('user2-160x160.jpg', array('class' => 'user-image', 'alt' => 'User Image')); ?>
-          <span class="hidden-xs">Alexander Pierce</span>
+          <span class="hidden-xs"><?= h($username) ?></span>
         </a>
         <ul class="dropdown-menu">
           <!-- User image -->
@@ -261,8 +268,9 @@
             <?php echo $this->Html->image('user2-160x160.jpg', array('class' => 'img-circle', 'alt' => 'User Image')); ?>
 
             <p>
-              Alexander Pierce - Web Developer
-              <small>Member since Nov. 2012</small>
+              <?= h($username) ?>
+              <small><?= $userEmail ? h($userEmail) : '' ?></small>
+              <small>Member since <?= $userCreated ? h($userCreated->format('M. Y')) : 'N/A' ?></small>
             </p>
           </li>
           <!-- Menu Body -->
@@ -286,7 +294,7 @@
               <a href="#" class="btn btn-default btn-flat">Profile</a>
             </div>
             <div class="pull-right">
-              <a href="#" class="btn btn-default btn-flat">Sign out</a>
+              <a href="<?= $this->Url->build('/logout') ?>" class="btn btn-default btn-flat">Sign out</a>
             </div>
           </li>
         </ul>
